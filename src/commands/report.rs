@@ -1,5 +1,4 @@
 use anyhow::Result;
-use serde::Serialize;
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 use std::process;
@@ -14,11 +13,6 @@ pub enum OutputFormat {
     Plaintext,
     Json,
     Yaml,
-}
-
-#[derive(Debug, Serialize)]
-struct CheckResult {
-    status: Status,
 }
 
 #[derive(Debug)]
