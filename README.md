@@ -11,7 +11,26 @@ the hashes or leave them as-is for later review.
 
 ## Getting started
 
-Install via curl and the install.sh script.
+Install via curl:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/corporealshift/driftwatcher/main/install.sh | bash
+```
+
+Or specify a custom install directory:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/corporealshift/driftwatcher/main/install.sh | INSTALL_DIR=~/.local/bin bash
+```
+
+### Build from source
+
+```bash
+git clone https://github.com/corporealshift/driftwatcher.git
+cd driftwatcher
+cargo build --release
+cp target/release/drifty /usr/local/bin/
+```
 
 ## Usage
 
@@ -46,7 +65,15 @@ but ignores hidden files (those starting with `.`).
 - **MISSING** - The file had a hash but no longer exists.
 - **INVALID** - The entry has no hash (malformed frontmatter). 
 
-## Example
+## Examples
+
+See the [examples/](examples/) directory for complete working examples:
+
+- [examples/basic.md](examples/basic.md) - Simple single-file watching
+- [examples/glob-patterns.md](examples/glob-patterns.md) - Using glob patterns to watch multiple files
+- [examples/root-paths.md](examples/root-paths.md) - Using `$ROOT/` prefix for project-relative paths
+
+### Basic Example
 
 ```markdown
 ---
@@ -65,6 +92,23 @@ to Driftwatcher. When the `drifty check` command is run, it will hash the config
 db_conn.rs files and compare the hashes in the map to the new ones. If they are different
 you will get prompted with a select list of files to update. You can select individual
 files, respond with (a) to update all, or (n) to update none.
+
+### Quick Start
+
+```bash
+# Initialize a doc file with driftwatcher frontmatter
+drifty init docs/api.md
+
+# Add files to watch
+drifty add docs/api.md src/api/handler.rs
+drifty add docs/api.md "src/api/**/*.rs"
+
+# Check for drift
+drifty check
+
+# Or just report status (useful for CI)
+drifty report --format json
+```
 
 ## Report output
 
