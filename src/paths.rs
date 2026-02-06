@@ -74,8 +74,8 @@ impl PathResolver {
         if is_glob_pattern(pattern) {
             // Use glob for pattern matching
             let mut paths = Vec::new();
-            for entry in glob(&pattern_str)
-                .with_context(|| format!("Invalid glob pattern: {}", pattern))?
+            for entry in
+                glob(&pattern_str).with_context(|| format!("Invalid glob pattern: {}", pattern))?
             {
                 match entry {
                     Ok(path) => {

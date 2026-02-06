@@ -23,7 +23,10 @@ pub fn run(doc_file: &Path) -> Result<()> {
             // Has frontmatter but no driftwatcher key - add it
             let new_content = frontmatter::add_driftwatcher_to_existing(&content)?;
             frontmatter::write_file(doc_file, &new_content)?;
-            println!("Added driftwatcher to existing frontmatter in {}", doc_file.display());
+            println!(
+                "Added driftwatcher to existing frontmatter in {}",
+                doc_file.display()
+            );
             Ok(())
         }
         None => {

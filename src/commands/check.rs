@@ -53,11 +53,7 @@ pub fn run(target: Option<&Path>) -> Result<()> {
                 (Status::Current, _) => current_count += 1,
                 (Status::Missing, _) => {
                     missing_count += 1;
-                    eprintln!(
-                        "MISSING: {} -> {}",
-                        doc_path.display(),
-                        entry.pattern
-                    );
+                    eprintln!("MISSING: {} -> {}", doc_path.display(), entry.pattern);
                 }
                 (Status::Invalid, _) => {
                     eprintln!(
@@ -102,7 +98,9 @@ pub fn run(target: Option<&Path>) -> Result<()> {
 
         println!();
         let selections = MultiSelect::with_theme(&ColorfulTheme::default())
-            .with_prompt("Select entries to update (space to toggle, enter to confirm, 'a' for all)")
+            .with_prompt(
+                "Select entries to update (space to toggle, enter to confirm, 'a' for all)",
+            )
             .items(&items)
             .interact()?;
 

@@ -5,7 +5,8 @@ use std::path::{Path, PathBuf};
 
 /// Hash a single file's contents
 pub fn hash_file(path: &Path) -> Result<String> {
-    let contents = fs::read(path).with_context(|| format!("Failed to read file: {}", path.display()))?;
+    let contents =
+        fs::read(path).with_context(|| format!("Failed to read file: {}", path.display()))?;
     let mut hasher = Sha256::new();
     hasher.update(&contents);
     let result = hasher.finalize();
@@ -23,8 +24,8 @@ pub fn hash_files(paths: &[PathBuf]) -> Result<String> {
         // Include relative path in hash for structure sensitivity
         hasher.update(path.to_string_lossy().as_bytes());
         hasher.update(b"\n");
-        let contents = fs::read(path)
-            .with_context(|| format!("Failed to read file: {}", path.display()))?;
+        let contents =
+            fs::read(path).with_context(|| format!("Failed to read file: {}", path.display()))?;
         hasher.update(&contents);
         hasher.update(b"\n");
     }

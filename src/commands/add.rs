@@ -38,10 +38,7 @@ pub fn run(doc_file: &Path, watch_pattern: &str) -> Result<()> {
     let paths = resolver.resolve(watch_pattern)?;
 
     if paths.is_empty() {
-        return Err(anyhow!(
-            "Pattern '{}' matches no files",
-            watch_pattern
-        ));
+        return Err(anyhow!("Pattern '{}' matches no files", watch_pattern));
     }
 
     let hash = resolver.hash_pattern(watch_pattern)?;

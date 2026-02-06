@@ -10,10 +10,7 @@ pub fn find_markdown_files(target: Option<&Path>) -> Result<Vec<PathBuf>> {
         if is_markdown(start) {
             return Ok(vec![start.to_path_buf()]);
         } else {
-            return Err(anyhow!(
-                "File is not a markdown file: {}",
-                start.display()
-            ));
+            return Err(anyhow!("File is not a markdown file: {}", start.display()));
         }
     }
 

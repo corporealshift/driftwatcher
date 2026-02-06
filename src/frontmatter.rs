@@ -55,8 +55,8 @@ pub fn parse(content: &str) -> Result<Option<Frontmatter>> {
     let end_pos = 3 + close_pos + 4; // "---" + content + "\n---"
 
     // Parse as YAML
-    let parsed: YamlFrontmatter = serde_yaml::from_str(yaml_content)
-        .with_context(|| "Failed to parse YAML frontmatter")?;
+    let parsed: YamlFrontmatter =
+        serde_yaml::from_str(yaml_content).with_context(|| "Failed to parse YAML frontmatter")?;
 
     // Extract driftwatcher entries
     let entries = if let Some(dw_entries) = parsed.driftwatcher {
@@ -64,7 +64,9 @@ pub fn parse(content: &str) -> Result<Option<Frontmatter>> {
             .into_iter()
             .filter_map(|map| {
                 // Each entry is a single-key map: { "pattern": "hash" } or { "pattern": null }
-                map.into_iter().next().map(|(pattern, hash)| WatchEntry { pattern, hash })
+                map.into_iter()
+                    .next()
+                    .map(|(pattern, hash)| WatchEntry { pattern, hash })
             })
             .collect()
     } else {
@@ -92,20 +94,21 @@ pub fn add_empty_frontmatter(content: &str) -> String {
 
 /// Add driftwatcher key to existing frontmatter
 pub fn add_driftwatcher_to_existing(content: &str) -> Result<String> {
-    let fm = parse(content)?
-        .ok_or_else(|| anyhow!("No frontmatter found"))?;
+    let fm = parse(content)?.ok_or_else(|| anyhow!("No frontmatter found"))?;
 
     // Insert driftwatcher: before the closing ---
     let before_close = &content[..content[..fm.end_pos].rfind("\n---").unwrap()];
     let after_close = &content[fm.end_pos..];
 
-    Ok(format!("{}\ndriftwatcher:\n---{}", before_close, after_close))
+    Ok(format!(
+        "{}\ndriftwatcher:\n---{}",
+        before_close, after_close
+    ))
 }
 
 /// Add a watch entry to the frontmatter
 pub fn add_entry(content: &str, pattern: &str, hash: &str) -> Result<String> {
-    let fm = parse(content)?
-        .ok_or_else(|| anyhow!("No frontmatter found"))?;
+    let fm = parse(content)?.ok_or_else(|| anyhow!("No frontmatter found"))?;
 
     if !fm.has_driftwatcher() {
         // Add driftwatcher section first
@@ -175,8 +178,7 @@ pub fn update_entry(content: &str, pattern: &str, new_hash: &str) -> Result<Stri
 
 /// Write updated content to a file
 pub fn write_file(path: &Path, content: &str) -> Result<()> {
-    fs::write(path, content)
-        .with_context(|| format!("Failed to write file: {}", path.display()))
+    fs::write(path, content).with_context(|| format!("Failed to write file: {}", path.display()))
 }
 
 #[cfg(test)]

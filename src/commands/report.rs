@@ -127,11 +127,7 @@ fn print_json(reports: &[DocumentReport]) {
     let map: BTreeMap<String, BTreeMap<String, Status>> = reports
         .iter()
         .map(|r| {
-            let inner: BTreeMap<_, _> = r
-                .results
-                .iter()
-                .map(|(p, s)| (p.clone(), *s))
-                .collect();
+            let inner: BTreeMap<_, _> = r.results.iter().map(|(p, s)| (p.clone(), *s)).collect();
             (r.doc_path.display().to_string(), inner)
         })
         .collect();
